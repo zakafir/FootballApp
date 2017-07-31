@@ -2,29 +2,62 @@ package com.st00.afir.footballapp;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
-import android.widget.ListView;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Spinner;
+import android.widget.Toast;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        List<Player> players = new ArrayList<>();
-        players.add(new Player(7, "Cristiano Ronaldo", "Portugal", "feb 1998"));
-        players.add(new Player(9, "Karim Benzema", "France", "feb 1998"));
-        players.add(new Player(11, "Gareth Bale", "Gallois", "feb 1998"));
-        players.add(new Player(10, "Lukas Modric", "Gallois", "feb 1998"));
-        players.add(new Player(4, "Sergio Ramos", "Espagne", "feb 1998"));
-        players.add(new Player(3, "Raphael Varane", "France", "feb 1998"));
+        String manU = "{\"_links\":{\"self\":{\"href\":\"http://api.football-data.org/v1/teams/66\"},\"fixtures\":{\"href\":\"http://api.football-data.org/v1/teams/66/fixtures\"},\"players\":{\"href\":\"http://api.football-data.org/v1/teams/66/players\"}},\"name\":\"Manchester United FC\",\"code\":\"MUFC\",\"shortName\":\"ManU\",\"squadMarketValue\":null,\"crestUrl\":\"http://upload.wikimedia.org/wikipedia/de/d/da/Manchester_United_FC.svg\"}";
+        String tottenham = "{\"_links\":{\"self\":{\"href\":\"http://api.football-data.org/v1/teams/73\"},\"fixtures\":{\"href\":\"http://api.football-data.org/v1/teams/73/fixtures\"},\"players\":{\"href\":\"http://api.football-data.org/v1/teams/73/players\"}},\"name\":\"Tottenham Hotspur FC\",\"code\":\"THFC\",\"shortName\":\"Spurs\",\"squadMarketValue\":null,\"crestUrl\":\"http://upload.wikimedia.org/wikipedia/de/b/b4/Tottenham_Hotspur.svg\"}";
+        List<String> teams = new ArrayList<String>();
 
-        ListView myListView = (ListView) findViewById(R.id.list_view_players);
-        PlayersAdapter<Player> adapter = new PlayersAdapter<Player>(this, players);
-        myListView.setAdapter(adapter);
+        try {
+            teams.add(new JSONObject(manU).getString("name"));
+            teams.add(new JSONObject(tottenham).getString("name"));
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        // Spinner element
+        Spinner spinner = (Spinner) findViewById(R.id.teams_spinner);
+
+        // Spinner click listener
+        spinner.setOnItemSelectedListener(this);
+
+        // Creating adapter for spinner
+        ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, teams);
+
+        // Drop down layout style - list view with radio button
+        dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+        // attaching data adapter to spinner
+        spinner.setAdapter(dataAdapter);
+    }
+
+    @Override
+    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+        // On selecting a spinner item
+        String item = parent.getItemAtPosition(position).toString();
+
+        // Showing selected spinner item
+        Toast.makeText(parent.getContext(), "Selected: " + item, Toast.LENGTH_LONG).show();
+    }
+    public void onNothingSelected(AdapterView<?> arg0) {
+        // TODO Auto-generated method stub
     }
 }
