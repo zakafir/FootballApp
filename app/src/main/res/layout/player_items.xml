@@ -32,7 +32,9 @@
             android:fontFamily="sans-serif-medium"
             android:textSize="20sp"
             android:textStyle="bold"
-            tools:text="Cristiano RONALDO" />
+            tools:text="Cristiano RONALDO"
+            android:maxLines="1"
+            android:ellipsize="end"/>
 
         <TextView
             android:id="@+id/player_date_of_birth"
