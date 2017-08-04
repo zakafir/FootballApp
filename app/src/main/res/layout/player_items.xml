@@ -8,29 +8,61 @@
 
     <TextView
         android:id="@+id/jersey_number"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_weight="0.3"
+        android:layout_width="36dp"
+        android:layout_height="36dp"
+        android:layout_gravity="center_vertical"
+        android:background="@drawable/number_circle"
+        android:fontFamily="sans-serif-medium"
+        android:gravity="center"
+        android:textColor="@android:color/white"
+        android:textSize="19sp"
         tools:text="7" />
 
-    <TextView
-        android:id="@+id/player_name"
-        android:layout_width="0dp"
+    <RelativeLayout
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_weight="2"
-        tools:text="Cristiano RONALDO" />
+        android:layout_marginLeft="16dp">
 
-    <TextView
-        android:id="@+id/player_natioanlity"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        tools:text="Portugal" />
+        <TextView
+            android:id="@+id/player_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_marginBottom="8dp"
+            android:fontFamily="sans-serif-medium"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            tools:text="Cristiano RONALDO" />
 
-    <TextView
-        android:id="@+id/player_date_of_birth"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        tools:text="feb, 2, 1982" />
+        <TextView
+            android:id="@+id/player_date_of_birth"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_weight="1"
+            android:fontFamily="sans-serif-medium"
+            android:textSize="16sp"
+            tools:text="feb, 2, 1982" />
+
+        <TextView
+            android:id="@+id/player_natioanlity"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/player_name"
+            android:paddingBottom="8dp"
+            tools:text="Portugal" />
+
+        <TextView
+            android:id="@+id/player_position"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:layout_below="@id/player_date_of_birth"
+            android:paddingBottom="8dp"
+            tools:text="Striker"></TextView>
+
+    </RelativeLayout>
+
+
 </LinearLayout>

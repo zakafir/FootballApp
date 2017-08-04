@@ -27,7 +27,8 @@ public class QueryUtils {
                 listOfPlayers.add(new Player(entry.getInt("jerseyNumber"),
                         entry.getString("name"),
                         entry.getString("nationality"),
-                        entry.getString("dateOfBirth")));
+                        entry.getString("dateOfBirth"),
+                        entry.getString("position")));
             }
 
         } catch (JSONException e) {

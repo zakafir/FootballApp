@@ -9,13 +9,15 @@ public class Player {
     private int jerseyNumber;
     private String name;
     private String nationality;
-    private String DateOfBirth;
+    private String dateOfBirth;
+    private String position;
 
-    public Player(int jerseyNumber, String name, String nationality, String dateOfBirth) {
+    public Player(int jerseyNumber, String name, String nationality, String dateOfBirth, String position) {
         this.jerseyNumber = jerseyNumber;
         this.name = name;
         this.nationality = nationality;
-        DateOfBirth = dateOfBirth;
+        this.dateOfBirth = dateOfBirth;
+        this.position = position;
     }
 
     public int getJerseyNumber() {
@@ -31,6 +33,10 @@ public class Player {
     }
 
     public String getDateOfBirth() {
-        return DateOfBirth;
+        return dateOfBirth;
+    }
+
+    public String getPosition() {
+        return position;
     }
 }

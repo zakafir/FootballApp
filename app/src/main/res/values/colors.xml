@@ -3,4 +3,13 @@
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
+
+    <color name="keeper">#4A7BA7</color>
+    <color name="back">#10CAC9</color>
+    <color name="defensive_Midfield">#F5A623</color>
+    <color name="central_Midfield">#FF7D50</color>
+    <color name="attacking_Midfield">#FC6644</color>
+    <color name="wing">#E75F60</color>
+    <color name="secondary_Striker">#E13A20</color>
+    <color name="centre_Forward">#C03823</color>
 </resources>
