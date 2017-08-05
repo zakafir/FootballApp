@@ -54,10 +54,9 @@ class PlayersAdapter<T> extends ArrayAdapter {
         TextView playerPositionTextView = (TextView) listItemView.findViewById(R.id.player_position);
         playerPositionTextView.setText(currentPlayer.getPosition());
 
-        GradientDrawable magnitudeCircle = (GradientDrawable) playerNumberTextView.getBackground();
-
+        GradientDrawable numberCircle = (GradientDrawable) playerNumberTextView.getBackground();
         int numberColor = getNumberColor(currentPlayer.getPosition());
-        magnitudeCircle.setColor(numberColor);
+        numberCircle.setColor(numberColor);
 
         return listItemView;
     }
