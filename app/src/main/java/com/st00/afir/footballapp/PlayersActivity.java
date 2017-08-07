@@ -1,16 +1,25 @@
 package com.st00.afir.footballapp;
 
-import android.os.AsyncTask;
 import android.os.Bundle;
+import android.app.LoaderManager;
+import android.app.LoaderManager.LoaderCallbacks;
+import android.content.Loader;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.widget.ListView;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class PlayersActivity extends AppCompatActivity {
+public class PlayersActivity extends AppCompatActivity implements LoaderCallbacks<List<Player>>{
 
-    private static final String LOG_TAG = Utils.class.getSimpleName();
+    private static final String LOG_TAG = PlayersActivity.class.getSimpleName();
+
+    /**
+     * Constant value for the player loader ID. We can choose any integer.
+     * This really only comes into play if you're using multiple loaders.
+     */
+    private static final int PLAYER_LOADER_ID = 1;
 
     /**
      * URL for players data
@@ -23,38 +32,41 @@ public class PlayersActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_players);
+        setContentView(R.layout.list_view_players);
 
         myListView = (ListView) findViewById(R.id.list_view_players);
         adapter = new PlayersAdapter<>(PlayersActivity.this, new ArrayList<Player>());
         myListView.setAdapter(adapter);
 
-        PlayersAsyncTask playersAsyncTask = new PlayersAsyncTask();
-        playersAsyncTask.execute(FOOTBALL_REQUEST_URL);
+        // Get a reference to the LoaderManager, in order to interact with loaders.
+        LoaderManager loaderManager = getLoaderManager();
+        loaderManager.initLoader(PLAYER_LOADER_ID, null, PlayersActivity.this);
+        Log.d(LOG_TAG,"Loader initialized");
 
     }
 
-    private class PlayersAsyncTask extends AsyncTask<String, Void, List<Player>> {
+    @Override
+    public Loader<List<Player>> onCreateLoader(int id, Bundle args) {
+        Log.d(LOG_TAG,"Loader created");
+        return new PlayerLoader(this,FOOTBALL_REQUEST_URL);
+    }
 
-        @Override
-        protected List<Player> doInBackground(String... strings) {
-            if (strings.length < 1 || strings[0] == null) {
-                return null;
-            }
-            List<Player> list = Utils.fetchPlayersData(strings[0]);
-            return list;
+    @Override
+    public void onLoadFinished(Loader<List<Player>> loader, List<Player> players) {
+        // Clear the adapter of previous data
+        adapter.clear();
+
+        // If there is a valid list of {@link Player}s, then add them to the adapter's
+        // data set. This will trigger the ListView to update.
+        if (players != null && !players.isEmpty()) {
+            adapter.addAll(players);
         }
+        Log.d(LOG_TAG,"Loader Finished Loading");
+    }
 
-        @Override
-        protected void onPostExecute(List<Player> list) {
-            // Clear the adapter of previous data
-            adapter.clear();
-
-            // If there is a valid list of {@link Player}s, then add them to the adapter's
-            // data set. This will trigger the ListView to update.
-            if (list != null && !list.isEmpty()) {
-                adapter.addAll(list);
-            }
-        }
+    @Override
+    public void onLoaderReset(Loader<List<Player>> loader) {
+        Log.d(LOG_TAG,"Loader reset");
+        adapter.clear();
     }
 }
