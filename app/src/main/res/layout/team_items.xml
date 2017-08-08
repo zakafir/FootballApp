@@ -6,8 +6,8 @@
     android:orientation="vertical">
 
     <RelativeLayout
-        android:padding="16dp"
-        android:layout_width="wrap_content"
+        android:layout_margin="16dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
         <ImageView
@@ -18,13 +18,16 @@
 
         <TextView
             android:id="@+id/team_name"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/team_image"
             android:textSize="16sp"
+            android:fontFamily="sans-serif-condensed"
+            android:textStyle="bold"
             tools:text="Real Madrid"
             android:gravity="center_horizontal"
-            android:maxLines="2"
+            android:foregroundGravity="center_horizontal"
+            android:maxLines="1"
             android:ellipsize="end"/>
 
     </RelativeLayout>

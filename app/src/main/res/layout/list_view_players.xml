@@ -5,6 +5,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:divider="@null"
-    tools:context="com.st00.afir.footballapp.MainActivity">
+    tools:context="com.st00.afir.footballapp.TeamActivity">
 
 </ListView>
