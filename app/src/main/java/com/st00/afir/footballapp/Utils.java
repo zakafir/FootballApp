@@ -24,14 +24,10 @@ import java.util.List;
 
 public final class Utils {
 
-    /**
-     * Tag for the log messages
-     */
     private static final String LOG_TAG = Utils.class.getSimpleName();
 
-    /**
-     * fetching players data
-     */
+    private static final String AUTH_TOKEN = "7dbc0bb8c49d40bcb290f09ef3908cdb";
+
     public static List<Player> fetchPlayersData(String requestUrl) {
         // Create URL object
         URL url = createUrl(requestUrl);
@@ -45,10 +41,37 @@ public final class Utils {
         }
 
         // Extract relevant fields from the JSON response and create an {@link Players} object
-        List<Player> players = extractInformationFromJson(jsonResponse);
+        List<Player> players = extractPlayerInformationFromJson(jsonResponse);
 
         // Return the {@link Players}
         return players;
+    }
+
+    /**
+     * fetching team data
+     */
+    private static List<Team> teams = new ArrayList<>();
+
+    public static List<Team> fetchTeamsData(List<String> requestUrl) {
+
+        for (String u : requestUrl) {
+
+            URL url = createUrl(u);
+
+            // Perform HTTP request to the URL and receive a JSON response back
+            String jsonResponse = null;
+            try {
+                jsonResponse = makeHttpRequest(url);
+            } catch (IOException e) {
+                Log.e(LOG_TAG, "Error closing input stream", e);
+            }
+
+            // Extract relevant fields from the JSON response and create an {@link Players} object
+            teams.add(extractTeamInformationFromJson(jsonResponse));
+        }
+        // Return the {@link Players}
+        return teams;
+
     }
 
     /**
@@ -80,8 +103,9 @@ public final class Utils {
         try {
             urlConnection = (HttpURLConnection) url.openConnection();
             urlConnection.setReadTimeout(10000 /* milliseconds */);
-            urlConnection.setConnectTimeout(15000 /* milliseconds */);
+            urlConnection.setConnectTimeout(20000 /* milliseconds */);
             urlConnection.setRequestMethod("GET");
+            urlConnection.setRequestProperty("X-Auth-Token", AUTH_TOKEN);
             urlConnection.connect();
 
             // If the request was successful (response code 200),
@@ -126,26 +150,42 @@ public final class Utils {
     /**
      * Return an {@link Player} object by parsing out information
      */
-    private static List <Player> extractInformationFromJson(String playerJSON) {
+    private static List<Player> extractPlayerInformationFromJson(String playerJSON) {
         // If the JSON string is empty or null, then return early.
         if (TextUtils.isEmpty(playerJSON)) {
             return null;
         }
-            List<Player> listOfPlayers = new ArrayList<>();
-            try {
-                JSONArray players = new JSONObject(playerJSON).optJSONArray("players");
-                for (int i = 0; i < players.length(); ++i) {
-                    JSONObject entry = players.optJSONObject(i);
-                    listOfPlayers.add(new Player(entry.getInt("jerseyNumber"),
-                            entry.getString("name"),
-                            entry.getString("nationality"),
-                            entry.getString("dateOfBirth"),
-                            entry.getString("position")));
-                }
-
-            } catch (JSONException e) {
-                Log.e(LOG_TAG, "Error on JSON: " + e);
+        List<Player> listOfPlayers = new ArrayList<>();
+        try {
+            JSONArray players = new JSONObject(playerJSON).optJSONArray("players");
+            for (int i = 0; i < players.length(); ++i) {
+                JSONObject entry = players.optJSONObject(i);
+                listOfPlayers.add(new Player(entry.getInt("jerseyNumber"),
+                        entry.getString("name"),
+                        entry.getString("nationality"),
+                        entry.getString("dateOfBirth"),
+                        entry.getString("position")));
             }
-            return listOfPlayers;
+
+        } catch (JSONException e) {
+            Log.e(LOG_TAG, "Error on JSON: " + e);
+        }
+        return listOfPlayers;
+    }
+
+    private static Team extractTeamInformationFromJson(String playerJSON) {
+        // If the JSON string is empty or null, then return early.
+        if (TextUtils.isEmpty(playerJSON)) {
+            return null;
+        }
+        JSONObject jsonObject = null;
+        try {
+            jsonObject = new JSONObject(playerJSON);
+            //String teamLogo = jsonObject.optString("crestUrl");
+
+        } catch (JSONException e) {
+            Log.e(LOG_TAG, "Error on JSON: " + e);
+        }
+        return new Team(jsonObject.optString("name"), jsonObject.optString("crestUrl"));
     }
 }
