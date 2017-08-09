@@ -7,6 +7,7 @@ import android.content.Loader;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,6 +29,7 @@ public class PlayersActivity extends AppCompatActivity implements LoaderCallback
 
     private ListView myListView;
     private PlayersAdapter<Player> adapter;
+    private TextView noDataTextView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,6 +39,9 @@ public class PlayersActivity extends AppCompatActivity implements LoaderCallback
         myListView = (ListView) findViewById(R.id.list_view_players);
         adapter = new PlayersAdapter<>(PlayersActivity.this, new ArrayList<Player>());
         myListView.setAdapter(adapter);
+
+        noDataTextView = (TextView)findViewById(R.id.message_no_data);
+        myListView.setEmptyView(noDataTextView);
 
         // Get a reference to the LoaderManager, in order to interact with loaders.
         LoaderManager loaderManager = getLoaderManager();
@@ -62,6 +67,7 @@ public class PlayersActivity extends AppCompatActivity implements LoaderCallback
             adapter.addAll(players);
         }
         Log.d(LOG_TAG,"Loader Finished Loading");
+        noDataTextView.setText("No players");
     }
 
     @Override
