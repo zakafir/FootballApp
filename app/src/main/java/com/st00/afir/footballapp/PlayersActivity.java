@@ -1,12 +1,17 @@
 package com.st00.afir.footballapp;
 
-import android.os.Bundle;
 import android.app.LoaderManager;
 import android.app.LoaderManager.LoaderCallbacks;
+import android.content.Context;
 import android.content.Loader;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
+import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.View;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -30,6 +35,7 @@ public class PlayersActivity extends AppCompatActivity implements LoaderCallback
     private ListView myListView;
     private PlayersAdapter<Player> adapter;
     private TextView noDataTextView;
+    private ProgressBar myProgressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,10 +49,25 @@ public class PlayersActivity extends AppCompatActivity implements LoaderCallback
         noDataTextView = (TextView)findViewById(R.id.message_no_data);
         myListView.setEmptyView(noDataTextView);
 
-        // Get a reference to the LoaderManager, in order to interact with loaders.
-        LoaderManager loaderManager = getLoaderManager();
-        loaderManager.initLoader(PLAYER_LOADER_ID, null, PlayersActivity.this);
-        Log.d(LOG_TAG,"Loader initialized");
+        myProgressBar = (ProgressBar)findViewById(R.id.loading_spinner);
+
+        ConnectivityManager cm =
+                (ConnectivityManager)getSystemService(Context.CONNECTIVITY_SERVICE);
+
+        NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
+        boolean isConnected = activeNetwork != null &&
+                activeNetwork.isConnectedOrConnecting();
+
+        if(isConnected) {
+            // Get a reference to the LoaderManager, in order to interact with loaders.
+            LoaderManager loaderManager = getLoaderManager();
+            loaderManager.initLoader(PLAYER_LOADER_ID, null, PlayersActivity.this);
+            Log.d(LOG_TAG, "Loader initialized");
+        }
+        else {
+            noDataTextView.setText("No INTERNET connexion");
+            myProgressBar.setVisibility(View.GONE);
+        }
 
     }
 
@@ -67,6 +88,7 @@ public class PlayersActivity extends AppCompatActivity implements LoaderCallback
             adapter.addAll(players);
         }
         Log.d(LOG_TAG,"Loader Finished Loading");
+        myProgressBar.setVisibility(View.GONE);
         noDataTextView.setText("No players");
     }
 
