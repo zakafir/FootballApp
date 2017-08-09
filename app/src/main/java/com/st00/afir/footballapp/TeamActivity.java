@@ -10,7 +10,7 @@ import java.util.List;
 
 public class TeamActivity extends AppCompatActivity {
 
-    private static final String LOG_TAG = Utils.class.getSimpleName();
+    private static final String LOG_TAG = TeamActivity.class.getSimpleName();
     /**
      * URL for players data, you have to add the number after teams/
      */
