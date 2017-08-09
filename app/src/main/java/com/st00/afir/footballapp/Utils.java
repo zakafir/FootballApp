@@ -29,6 +29,13 @@ public final class Utils {
     private static final String AUTH_TOKEN = "7dbc0bb8c49d40bcb290f09ef3908cdb";
 
     public static List<Player> fetchPlayersData(String requestUrl) {
+
+        try {
+            Thread.sleep(2000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
         // Create URL object
         URL url = createUrl(requestUrl);
 
@@ -53,6 +60,13 @@ public final class Utils {
     private static List<Team> teams = new ArrayList<>();
 
     public static List<Team> fetchTeamsData(List<String> requestUrl) {
+
+        try {
+            Thread.sleep(2000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
 
         for (String u : requestUrl) {
 
