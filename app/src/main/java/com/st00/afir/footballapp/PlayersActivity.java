@@ -5,9 +5,12 @@ import android.app.LoaderManager.LoaderCallbacks;
 import android.content.Context;
 import android.content.Intent;
 import android.content.Loader;
+import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.net.Uri;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
@@ -77,6 +80,18 @@ public class PlayersActivity extends AppCompatActivity implements LoaderCallback
     @Override
     public Loader<List<Player>> onCreateLoader(int id, Bundle args) {
         Log.d(LOG_TAG,"Loader created");
+
+        SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(this);
+
+        String minNumber = sharedPrefs.getString(
+                getString(R.string.settings_min_number_team_key),
+                getString(R.string.settings_min_number_team_default));
+
+        Uri baseUri = Uri.parse(FOOTBALL_REQUEST_URL);
+        Uri.Builder uriBuilder = baseUri.buildUpon();
+        uriBuilder.appendQueryParameter("", minNumber);
+        uriBuilder.appendQueryParameter("", "players");
+
         return new PlayerLoader(this,FOOTBALL_REQUEST_URL);
     }
 
